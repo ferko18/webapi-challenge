@@ -25,15 +25,15 @@ router.get('/', (req, res) => {
     const id = req.params.id
   
     db.get(id)
-      .then(actions => {
-        if (!actions) {
+      .then(action => {
+        if (!action) {
           return res.status(404).json({
             error: "The action with the specified ID does not exist"
           })
         } else {
           res.status(200).json({
             success: true,
-            actions
+            action
           })
         }
       })
