@@ -45,5 +45,31 @@ router.get('/', (req, res) => {
       })
   })
 
+//post 
+
+router.post("/", (req, res) => {
+    const { project_id, notes, description  } = req.body;
+    const newAction = req.body;
+  
+    if (!project_id || !description || !notes) {
+      return res.status(400).json({
+        errorMessage: "Please provide a project id, notes, and description for the action"
+      });
+    }
+  
+    db.insert(newAction)
+      .then(action => {
+        res.status(201).json({
+          success: true,
+          action
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          success: false,
+          error: "could not be saved to the database"
+        })
+      });
+  });
 
 module.exports = router;
