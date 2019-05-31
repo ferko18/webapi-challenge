@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
       .then(project => {
         if (!project) {
           return res.status(404).json({
-            error: "The action with the specified ID does not exist"
+            error: "the project with the specified ID does not exist"
           })
         } else {
           res.status(200).json({
@@ -45,5 +45,30 @@ router.get('/', (req, res) => {
         })
       })
   })
+
+  router.post("/", (req, res) => {
+    const { name, description } = req.body;
+    const newProject = req.body;
+      if (!name || !description) {
+      return res.status(400).json(
+          {
+        errorMessage: "name and description required"
+      });
+    }
+      db.insert(newProject)
+      .then(project => {
+        res.status(201).json({
+          success: true,
+          project
+        });
+      })
+      .catch(err => {
+        res.status(500).json(
+            {
+          success: false,
+          error: "There was an error while saving the project to the database"
+        })
+      });
+  });
 
 module.exports = router;
