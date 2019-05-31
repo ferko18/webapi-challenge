@@ -53,7 +53,7 @@ router.post("/", (req, res) => {
   
     if (!project_id || !description || !notes) {
       return res.status(400).json({
-        errorMessage: "Please provide a project id, notes, and description for the action"
+        errorMessage: "Please provide a project id, notes, and description "
       });
     }
   
@@ -97,7 +97,39 @@ router.delete("/:id", (req, res) => {
       })
   
   })
+
+  //edit 
+  router.put('/:id', (req, res) => {
+    const id = req.params.id
+    const { project_id, notes, description } = req.body;
+    const changes = req.body
   
+    if (!project_id || !description || !notes) {
+      return res.status(400).json({
+        errorMessage: "Please provide a project id, notes, and description "
+      });
+    }
+      db.update(id, changes).then(updatedAction => {
+        if (!updatedAction) {
+          return res.status(404).json({
+            success: false,
+            message: "The post with the specified Id does not exist."
+          })
+        } else {
+        res.status(201).json({
+            success: true,
+            updatedAction
+          })
+        }
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: err,
+          errorMessage: "The project could not be updated."
+        })
+      })
+  
+  })
 
 
 module.exports = router;
