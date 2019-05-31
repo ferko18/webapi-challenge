@@ -72,4 +72,32 @@ router.post("/", (req, res) => {
       });
   });
 
+//delete 
+
+router.delete("/:id", (req, res) => {
+    const id = req.params.id
+  
+    db.remove(id)
+      .then(action => {
+        if (!action) {
+          return res.status(204).json({
+            success: false,
+            message: "The action with the specified Id could not be found"
+          })
+        } else { res.status(202).json({
+            success: true,
+            message: `the action with an id=${id} is deleted`
+        });
+        }
+      })
+      .catch(err => {res.status(500).json({
+          success: false,
+          error: "The action could not be removed"
+        })
+      })
+  
+  })
+  
+
+
 module.exports = router;
